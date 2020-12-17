@@ -3,6 +3,9 @@ html, body {
   font-family: 'Microsoft YaHei';
   color: #333;
   background-color: #fff;
+}
+
+html, body, ul, li {
   margin: 0;
   padding: 0;
 }
