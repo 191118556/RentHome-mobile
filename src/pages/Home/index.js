@@ -46,24 +46,15 @@ export default class index extends Component {
                     hidden={this.state.hidden}
                 >
                     <TabBar.Item
-                        title="Life"
+                        title="首页"
                         key="Life"
-                        icon={<div style={{
-                            width: '22px',
-                            height: '22px',
-                            background: 'url(https://zos.alipayobjects.com/rmsportal/sifuoDUQdAFKAVcFGROC.svg) center center /  21px 21px no-repeat'
-                        }}
-                        />
+                        icon={<i className='iconfont icon-ind'></i>
                         }
-                        selectedIcon={<div style={{
-                            width: '22px',
-                            height: '22px',
-                            background: 'url(https://zos.alipayobjects.com/rmsportal/iSrlOTqrKddqbOmlvUfq.svg) center center /  21px 21px no-repeat'
-                        }}
-                        />
+                        selectedIcon={
+                            <i className='iconfont icon-ind'></i>
                         }
                         selected={this.state.selectedTab === 'blueTab'}
-                        badge={1}
+
                         onPress={() => {
                             this.setState({
                                 selectedTab: 'blueTab',
@@ -90,9 +81,9 @@ export default class index extends Component {
                             }}
                             />
                         }
-                        title="Koubei"
+                        title="找房"
                         key="Koubei"
-                        badge={'new'}
+
                         selected={this.state.selectedTab === 'redTab'}
                         onPress={() => {
                             this.setState({
@@ -120,7 +111,7 @@ export default class index extends Component {
                             }}
                             />
                         }
-                        title="Friend"
+                        title="资讯"
                         key="Friend"
                         dot
                         selected={this.state.selectedTab === 'greenTab'}
@@ -133,9 +124,9 @@ export default class index extends Component {
                         {this.renderContent('Friend')}
                     </TabBar.Item>
                     <TabBar.Item
-                        icon={{ uri: 'https://zos.alipayobjects.com/rmsportal/asJMfBrNqpMMlVpeInPQ.svg' }}
-                        selectedIcon={{ uri: 'https://zos.alipayobjects.com/rmsportal/gjpzzcrPMkhfEqgbYvmN.svg' }}
-                        title="My"
+                        icon={<i className='iconfont icon-my'></i>}
+                        selectedIcon={<i className='iconfont icon-my'></i>}
+                        title="我的"
                         key="my"
                         selected={this.state.selectedTab === 'yellowTab'}
                         onPress={() => {
