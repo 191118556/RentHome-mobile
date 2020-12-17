@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <HashRouter>
         <Link to='/'>首页</Link>
-        <Link to='/cityList'>城市</Link>
+        <Link to='/cityList'>城市选择</Link>
 
         <Route exact path='/' component={Home} />
         <Route exact path='/cityList' component={cityList} />
