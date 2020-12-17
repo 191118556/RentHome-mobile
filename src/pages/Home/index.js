@@ -1,47 +1,34 @@
 import React, { Component } from 'react'
+import './index.css'
 import { TabBar } from 'antd-mobile';
+import Index from '../Index';
+import { Route } from 'react-router-dom';
+// 找房
+import Rent from '../Rent';
+import News from '../News';
+import Profile from '../Profile';
 export default class index extends Component {
     constructor(props) {
         super(props);
         this.state = {
             selectedTab: 'redTab',
             hidden: false,
-            fullScreen: false,
         };
     }
-    renderContent(pageText) {
-        return (
-            <div style={{ backgroundColor: 'white', height: '100%', textAlign: 'center' }}>
-                <div style={{ paddingTop: 60 }}>Clicked “{pageText}” tab， show “{pageText}” information</div>
-                <a style={{ display: 'block', marginTop: 40, marginBottom: 20, color: '#108ee9' }}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({
-                            hidden: !this.state.hidden,
-                        });
-                    }}
-                >
-                    Click to show/hide tab-bar
-            </a>
-                <a style={{ display: 'block', marginBottom: 600, color: '#108ee9' }}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({
-                            fullScreen: !this.state.fullScreen,
-                        });
-                    }}
-                >
-                    Click to switch fullscreen
-            </a>
-            </div>
-        );
-    }
+
     render() {
+        // console.log(this.props.location);
+        // this.props
+        const { location: { pathname } } = this.props
         return (
-            <div style={this.state.fullScreen ? { position: 'fixed', height: '100%', width: '100%', top: 0 } : { height: 400 }}>
+            <div className='home'>
+                <Route path="/home/index" component={Index} />
+                <Route path="/home/rent" component={Rent} />
+                <Route path="/home/news" component={News} />
+                <Route path="/home/my" component={Profile} />
                 <TabBar
                     unselectedTintColor="#949494"
-                    tintColor="#33A3F4"
+                    tintColor="#21b97a"
                     barTintColor="white"
                     hidden={this.state.hidden}
                 >
@@ -53,89 +40,61 @@ export default class index extends Component {
                         selectedIcon={
                             <i className='iconfont icon-ind'></i>
                         }
-                        selected={this.state.selectedTab === 'blueTab'}
+                        selected={pathname === '/home/index'}
 
                         onPress={() => {
-                            this.setState({
-                                selectedTab: 'blueTab',
-                            });
+                            this.props.history.push('/home/index')
                         }}
                         data-seed="logId"
                     >
-                        {this.renderContent('Life')}
+
                     </TabBar.Item>
                     <TabBar.Item
                         icon={
-                            <div style={{
-                                width: '22px',
-                                height: '22px',
-                                background: 'url(https://gw.alipayobjects.com/zos/rmsportal/BTSsmHkPsQSPTktcXyTV.svg) center center /  21px 21px no-repeat'
-                            }}
-                            />
+                            <i className='iconfont icon-findHouse'></i>
                         }
                         selectedIcon={
-                            <div style={{
-                                width: '22px',
-                                height: '22px',
-                                background: 'url(https://gw.alipayobjects.com/zos/rmsportal/ekLecvKBnRazVLXbWOnE.svg) center center /  21px 21px no-repeat'
-                            }}
-                            />
+                            <i className='iconfont icon-findHouse'></i>
                         }
                         title="找房"
                         key="Koubei"
 
-                        selected={this.state.selectedTab === 'redTab'}
+                        selected={pathname === '/home/rent'}
                         onPress={() => {
-                            this.setState({
-                                selectedTab: 'redTab',
-                            });
+                            this.props.history.push('/home/rent')
                         }}
                         data-seed="logId1"
                     >
-                        {this.renderContent('Koubei')}
+
                     </TabBar.Item>
                     <TabBar.Item
                         icon={
-                            <div style={{
-                                width: '22px',
-                                height: '22px',
-                                background: 'url(https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg) center center /  21px 21px no-repeat'
-                            }}
-                            />
+                            <i className='iconfont icon-infom'></i>
                         }
                         selectedIcon={
-                            <div style={{
-                                width: '22px',
-                                height: '22px',
-                                background: 'url(https://zos.alipayobjects.com/rmsportal/IIRLrXXrFAhXVdhMWgUI.svg) center center /  21px 21px no-repeat'
-                            }}
-                            />
+                            <i className='iconfont icon-infom'></i>
                         }
                         title="资讯"
                         key="Friend"
                         dot
-                        selected={this.state.selectedTab === 'greenTab'}
+                        selected={pathname === '/home/news'}
                         onPress={() => {
-                            this.setState({
-                                selectedTab: 'greenTab',
-                            });
+                            this.props.history.push('/home/news')
                         }}
                     >
-                        {this.renderContent('Friend')}
+
                     </TabBar.Item>
                     <TabBar.Item
                         icon={<i className='iconfont icon-my'></i>}
                         selectedIcon={<i className='iconfont icon-my'></i>}
                         title="我的"
                         key="my"
-                        selected={this.state.selectedTab === 'yellowTab'}
+                        selected={pathname === '/home/profile'}
                         onPress={() => {
-                            this.setState({
-                                selectedTab: 'yellowTab',
-                            });
+                            this.props.history.push('/home/my')
                         }}
                     >
-                        {this.renderContent('My')}
+
                     </TabBar.Item>
                 </TabBar>
             </div>

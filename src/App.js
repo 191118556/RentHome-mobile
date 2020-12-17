@@ -9,8 +9,8 @@ function App() {
       <BrowserRouter>
 
 
-        <Route exact path='/' component={Home} />
-        <Route exact path='/cityList' component={cityList} />
+        <Route path='/home' component={Home} />
+        <Route path='/cityList' component={cityList} />
       </BrowserRouter>
     </div>
   );
