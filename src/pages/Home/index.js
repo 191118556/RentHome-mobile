@@ -7,6 +7,12 @@ import { Route } from 'react-router-dom';
 import Rent from '../Rent';
 import News from '../News';
 import Profile from '../Profile';
+const navs = [
+    { title: '首页', icon: 'icon-ind', path: '/home/index' },
+    { title: '找房', icon: 'icon-findHouse', path: '/home/rent' },
+    { title: '资讯', icon: 'icon-infom', path: '/home/news' },
+    { title: '我的', icon: 'icon-my', path: '/home/my' },
+]
 export default class index extends Component {
     constructor(props) {
         super(props);
@@ -17,6 +23,7 @@ export default class index extends Component {
     }
 
     render() {
+
         // console.log(this.props.location);
         // this.props
         const { location: { pathname } } = this.props
@@ -32,70 +39,27 @@ export default class index extends Component {
                     barTintColor="white"
                     hidden={this.state.hidden}
                 >
-                    <TabBar.Item
-                        title="首页"
-                        key="Life"
-                        icon={<i className='iconfont icon-ind'></i>
-                        }
-                        selectedIcon={
-                            <i className='iconfont icon-ind'></i>
-                        }
-                        selected={pathname === '/home/index'}
+                    {navs.map(item => {
+                        return (<TabBar.Item
+                            title={item.title}
+                            key={item.path}
+                            icon={<i className={`iconfont ${item.icon}`}></i>
+                            }
+                            selectedIcon={
+                                <i className={`iconfont ${item.icon}`}></i>
+                            }
+                            selected={pathname === item.path}
 
-                        onPress={() => {
-                            this.props.history.push('/home/index')
-                        }}
-                        data-seed="logId"
-                    >
+                            onPress={() => {
+                                this.props.history.push(item.path)
+                            }}
+                            data-seed="logId"
+                        >
 
-                    </TabBar.Item>
-                    <TabBar.Item
-                        icon={
-                            <i className='iconfont icon-findHouse'></i>
-                        }
-                        selectedIcon={
-                            <i className='iconfont icon-findHouse'></i>
-                        }
-                        title="找房"
-                        key="Koubei"
+                        </TabBar.Item>)
+                    })}
 
-                        selected={pathname === '/home/rent'}
-                        onPress={() => {
-                            this.props.history.push('/home/rent')
-                        }}
-                        data-seed="logId1"
-                    >
 
-                    </TabBar.Item>
-                    <TabBar.Item
-                        icon={
-                            <i className='iconfont icon-infom'></i>
-                        }
-                        selectedIcon={
-                            <i className='iconfont icon-infom'></i>
-                        }
-                        title="资讯"
-                        key="Friend"
-                        dot
-                        selected={pathname === '/home/news'}
-                        onPress={() => {
-                            this.props.history.push('/home/news')
-                        }}
-                    >
-
-                    </TabBar.Item>
-                    <TabBar.Item
-                        icon={<i className='iconfont icon-my'></i>}
-                        selectedIcon={<i className='iconfont icon-my'></i>}
-                        title="我的"
-                        key="my"
-                        selected={pathname === '/home/profile'}
-                        onPress={() => {
-                            this.props.history.push('/home/my')
-                        }}
-                    >
-
-                    </TabBar.Item>
                 </TabBar>
             </div>
         )
