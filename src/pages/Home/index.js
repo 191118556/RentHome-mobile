@@ -8,7 +8,7 @@ import Rent from '../Rent';
 import News from '../News';
 import Profile from '../Profile';
 const navs = [
-    { title: '首页', icon: 'icon-ind', path: '/home/index' },
+    { title: '首页', icon: 'icon-ind', path: '/home' },
     { title: '找房', icon: 'icon-findHouse', path: '/home/rent' },
     { title: '资讯', icon: 'icon-infom', path: '/home/news' },
     { title: '我的', icon: 'icon-my', path: '/home/my' },
@@ -17,8 +17,8 @@ export default class index extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedTab: 'redTab',
-            hidden: false,
+            // selectedTab: 'redTab',
+            // hidden: false,
         };
     }
 
@@ -29,7 +29,7 @@ export default class index extends Component {
         const { location: { pathname } } = this.props
         return (
             <div className='home'>
-                <Route path="/home/index" component={Index} />
+                <Route exact path="/home" component={Index} />
                 <Route path="/home/rent" component={Rent} />
                 <Route path="/home/news" component={News} />
                 <Route path="/home/my" component={Profile} />
@@ -37,10 +37,10 @@ export default class index extends Component {
                     unselectedTintColor="#949494"
                     tintColor="#21b97a"
                     barTintColor="white"
-                    hidden={this.state.hidden}
+
                 >
-                    {navs.map(item => {
-                        return (<TabBar.Item
+                    {navs.map(item =>
+                        <TabBar.Item
                             title={item.title}
                             key={item.path}
                             icon={<i className={`iconfont ${item.icon}`}></i>
@@ -56,8 +56,8 @@ export default class index extends Component {
                             data-seed="logId"
                         >
 
-                        </TabBar.Item>)
-                    })}
+                        </TabBar.Item>
+                    )}
 
 
                 </TabBar>
