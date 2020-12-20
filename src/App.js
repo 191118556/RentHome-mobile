@@ -15,7 +15,7 @@ function App() {
         <Redirect exact from='/' to='/home' />
         {/* 这里需要加个exact，不然会出现bug */}
         <Route path='/home' component={Home} />
-        <Route path='/cityList' component={cityList} />
+        <Route path='/citylist' component={cityList} />
         <Route path="/map" component={MyMap} />
         <Route path='*' component={NotFound} />
         {/* *是会匹配所以路由所以应该放在最后不然在switch之下就不会渲染到后面的路由 */}

@@ -116,7 +116,7 @@ export default class Index extends Component {
         return (
             <Flex className='search-box'>
                 <Flex className='search'>
-                    <div className='location'>
+                    <div className='location' onClick={() => this.props.history.push('/citylist')}>
                         {this.state.cityInfo.label || '广州'}
                         <i className='iconfont icon-arrow'></i>
                     </div>
@@ -198,9 +198,9 @@ export default class Index extends Component {
                 {/* 轮播图 */}
                 <div className="swiper-area">
                     {/* 搜索区域 */}
-                    {this.renderSearch()}
-                    {this.renderSwipers()}
 
+                    {this.renderSwipers()}
+                    {this.renderSearch()}
                 </div>
 
                 <div className="navs">
