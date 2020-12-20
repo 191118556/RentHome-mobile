@@ -25,42 +25,17 @@ function formatCityListData(List) {
         cityObj, cityIndex
     }
 }
-const list = [
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    'Brian Vaughn',
-    // And so on...
-];
-function rowRenderer({
-    key, // Unique key within array of rows
-    index, // Index of row within collection
-    isScrolling, // The List is currently being scrolled
-    isVisible, // This row is visible within the List (eg it is not an overscanned row)
-    style, // Style object to be applied to row (to position it)
-}) {
-    return (
-        <div key={key} style={style}>
-            {list[index]}
-        </div>
-    );
-}
+
 const titleHeight = 36;
 const nameHeight = 50;
 export default class index extends Component {
     state = {
         cityObj: {},
-        cityIndex: []
+        cityIndex: [],
+        curIndex: 0
     }
     getRowHeight = ({ index }) => {
-        console.log(index);
+
         let { cityIndex, cityObj } = this.state
         let letter = cityIndex[index]
         let list = cityObj[letter]
@@ -88,6 +63,7 @@ export default class index extends Component {
                 label = letter.toUpperCase()
                 break;
         }
+        // console.log(index);
         return (
             <div key={key} style={style} className='city'>
                 <div className='title'>{label}</div>
@@ -120,6 +96,17 @@ export default class index extends Component {
     componentDidMount() {
         this.getCityListData()
     }
+    renderIndex() {
+        let { curIndex } = this.state
+        return this.state.cityIndex.map((le, i) => {
+            let clsStr = `${curIndex === i ? 'index-active' : ' '}`;
+            return (
+                <li key={i} className="city-index-item">
+                    <span className={clsStr}>{le === 'hot' ? '热' : le.toUpperCase()}</span>
+                </li>
+            );
+        })
+    }
     render() {
         return (
             <div className='citylist-wraper'>
@@ -129,15 +116,27 @@ export default class index extends Component {
                     onLeftClick={() => this.props.history.go(-1)}
                 >城市列表</NavBar>
                 <AutoSizer>
+                    {/* 通过AutoSizer来调整自适应高度和宽度 */}
                     {({ height, width }) => <List
-                        width={width}
-                        height={height}
-                        rowCount={this.state.cityIndex.length}
-                        rowHeight={this.getRowHeight}
+                        width={width}//列表的宽度
+                        height={height}//列表的高度
+                        rowCount={this.state.cityIndex.length}//列表中 行的数量
+                        rowHeight={this.getRowHeight}//每一行的高度，每一行包括城市拼音首字母以及对应的城市
                         rowRenderer={this.rowRenderer}
+                    //每一行渲染的内容
                     />}
                 </AutoSizer>
-
+                {/* 右侧索引列表 */}
+                {/* 
+                    1 封装 renderCityIndex 方法，用来渲染城市索引列表。
+                    2 在方法中，获取到索引数组 cityIndex ，遍历 cityIndex ，渲染索引列表。
+                    3 将索引 hot 替换为 热。
+                    4 在 state 中添加状态 activeIndex ，指定当前高亮的索引。
+                    5 在遍历 cityIndex 时，添加当前字母索引是否高亮的判断条件。
+                    */}
+                <ul className='city-index'>
+                    {this.renderIndex()}
+                </ul>
             </div>
         )
     }
