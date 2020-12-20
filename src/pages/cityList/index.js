@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { NavBar } from 'antd-mobile';
 import axios from 'axios'
 import './index.scss'
+import { getCurrentCityInfo } from '../../utils'
 function formatCityListData(List) {
     let cityObj = {}
     for (let i = 0; i < List.length; i++) {
@@ -26,8 +27,20 @@ export default class index extends Component {
         const res = await axios.get('http://157.122.54.189:9060/area/city?level=1')
         // console.log(res.data.body);
         //将请求的数据 改造成可以渲染的结构
-        const { cityIndex, cityObj } = formatCityListData(res.data.body);
+        let { cityIndex, cityObj } = formatCityListData(res.data.body);
 
+        //发送请求获取热门城市，并把热门城市放到数组的首位
+        let hotRes = await axios.get('http://157.122.54.189:9060/area/hot')
+        // console.log(hot);
+        cityIndex.unshift('hot')
+        cityObj.hot = hotRes.data.body
+
+
+        //处理当前定位城市数据
+        const curCityInfo = await getCurrentCityInfo();
+
+        cityIndex.unshift('#');
+        cityObj['#'] = [curCityInfo];
         console.log(cityIndex, cityObj);
     }
     componentDidMount() {
