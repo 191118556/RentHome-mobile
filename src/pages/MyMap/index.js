@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import NavHeader from '../../components/NavHeader'
 // Set  
 // Map 
-
+import styles from './index.module.scss'
 import './index.scss';
 
 export default class MyMap extends Component {
@@ -18,9 +18,9 @@ export default class MyMap extends Component {
 
     render() {
         return (
-            <div className="map">
+            <div className={styles.map}>
                 <NavHeader >地图找房</NavHeader>
-                <div id="container"></div>
+                <div id="container" className={styles.container}></div>
             </div>
         )
     }

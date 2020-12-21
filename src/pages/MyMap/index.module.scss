@@ -1,0 +1,15 @@
+/* .map :global(.am-navbar) {} */
+
+.map {
+    height: 100%;
+    padding-top: 45px;
+
+    :global(.am-navbar) {
+        // color: tomato;
+        margin-top: -45px;
+    }
+}
+
+.container {
+    height: 100%;
+}
