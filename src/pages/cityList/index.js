@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { NavBar } from 'antd-mobile';
+import { NavBar, Toast } from 'antd-mobile';
 import axios from 'axios'
 //引入List组件
 // https://github.com/bvaughn/react-virtualized/blob/master/docs/List.md
@@ -25,15 +25,20 @@ function formatCityListData(List) {
         cityObj, cityIndex
     }
 }
-
+const hotCities = ['北京', '上海', '广州', '深圳'];
 const titleHeight = 36;
 const nameHeight = 50;
 export default class index extends Component {
+    listRef = React.createRef();
     state = {
         cityObj: {},
         cityIndex: [],
         curIndex: 0
     }
+    componentDidMount() {
+        this.getCityListData()
+    }
+    // listRef = React.createRef()
     getRowHeight = ({ index }) => {
 
         let { cityIndex, cityObj } = this.state
@@ -67,7 +72,7 @@ export default class index extends Component {
         return (
             <div key={key} style={style} className='city'>
                 <div className='title'>{label}</div>
-                {list.map(item => (<div className='name' key={item.value}>{item.label}</div>))}
+                {list.map(item => (<div className='name' key={item.value} onClick={this.changeCity.bind(this, item)}>{item.label}</div>))}
             </div>
         );
     }
@@ -90,22 +95,43 @@ export default class index extends Component {
         //这里cityIndex需要按顺序插入字符串,所以先做hot ，再做本地城市
         cityIndex.unshift('#');
         cityObj['#'] = [curCityInfo];
-        console.log(cityIndex, cityObj);
-        this.setState({ cityIndex, cityObj })
+        // console.log(cityIndex, cityObj);
+        this.setState({ cityIndex, cityObj }, () => { this.listRef.current.measureAllRows() })
     }
-    componentDidMount() {
-        this.getCityListData()
-    }
-    renderIndex() {
+
+    renderCityIndex() {
         let { curIndex } = this.state
         return this.state.cityIndex.map((le, i) => {
             let clsStr = `${curIndex === i ? 'index-active' : ' '}`;
             return (
-                <li key={i} className="city-index-item">
+                <li key={i} className="city-index-item" onClick={this.scrollTo.bind(this, i)}>
                     <span className={clsStr}>{le === 'hot' ? '热' : le.toUpperCase()}</span>
                 </li>
             );
         })
+    }
+    scrollTo(index) {
+        // console.log(index, this.listRef.current);
+        this.listRef.current.scrollToRow(index);
+
+    }
+    onRowsRendered = ({ startIndex }) => {
+        // console.log(startIndex, this.state.curIndex);
+        const { curIndex } = this.state;
+        if (curIndex !== startIndex) {
+            this.setState({ curIndex: startIndex })
+        }
+
+    }
+    changeCity(cityInfo) {
+        if (hotCities.indexOf(cityInfo.label) > -1) {
+            //切换城市
+            localStorage.setItem('hkzf_currentCity', JSON.stringify(cityInfo));
+            this.props.history.go(-1);
+        } else {
+            //该城市暂无房源数据
+            Toast.info(`该城市暂无房源数据`, 1, null, true);
+        }
     }
     render() {
         return (
@@ -123,6 +149,9 @@ export default class index extends Component {
                         rowCount={this.state.cityIndex.length}//列表中 行的数量
                         rowHeight={this.getRowHeight}//每一行的高度，每一行包括城市拼音首字母以及对应的城市
                         rowRenderer={this.rowRenderer}
+                        onRowsRendered={this.onRowsRendered}
+                        ref={this.listRef}
+                        scrollToAlignment="start"
                     //每一行渲染的内容
                     />}
                 </AutoSizer>
@@ -135,7 +164,7 @@ export default class index extends Component {
                     5 在遍历 cityIndex 时，添加当前字母索引是否高亮的判断条件。
                     */}
                 <ul className='city-index'>
-                    {this.renderIndex()}
+                    {this.renderCityIndex()}
                 </ul>
             </div>
         )

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Carousel, Flex, Grid, WingBlank } from 'antd-mobile';
 import axios from 'axios'
+import { getCurrentCityInfo } from '../../utils/index'
 import './index.scss'
 import Nav1 from '../../assets/images/nav-1.png'
 import Nav2 from '../../assets/images/nav-2.png'
@@ -28,7 +29,8 @@ export default class Index extends Component {
         }, 100);
 
         //请求轮播图数据
-        this.getLocation()
+        // this.getLocation()
+        this.getCityInfo()
         this.getSwiperData()
         this.getGroups()
         this.getNewsData();
@@ -63,23 +65,29 @@ export default class Index extends Component {
             news: res.data.body
         });
     }
-    //获取定位信息
-    getLocation = () => {
-        var myCity = new window.BMap.LocalCity();
-
-        myCity.get(async (result) => {
-
-            const res = await axios.get(`http://157.122.54.189:9060/area/info`, {
-                params: {
-                    name: result.name
-                }
-            })
-            // console.log(res);
-            this.setState({
-                cityInfo: res.data.body
-            })
+    async getCityInfo() {
+        const cityInfo = await getCurrentCityInfo();
+        this.setState({
+            cityInfo
         });
     }
+    //获取定位信息
+    // getLocation = () => {
+    //     var myCity = new window.BMap.LocalCity();
+
+    //     myCity.get(async (result) => {
+
+    //         const res = await axios.get(`http://157.122.54.189:9060/area/info`, {
+    //             params: {
+    //                 name: result.name
+    //             }
+    //         })
+    //         // console.log(res);
+    //         this.setState({
+    //             cityInfo: res.data.body
+    //         })
+    //     });
+    // }
     //渲染轮播图函数 返回轮播图组件
     renderSwipers() {
         //需要注意的是  一开始数组为空，但是会出现轮播图不会自动切换的bug， 所以需要注意 给一个条件渲染
