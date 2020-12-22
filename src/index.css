@@ -1,5 +1,4 @@
-html,
-body {
+html, body {
   height: 100%;
   font-family: 'Microsoft YaHei';
   color: #333;
@@ -10,10 +9,7 @@ body {
   height: 100%;
 }
 
-html,
-body,
-ul,
-li {
+html, body, ul, li, p {
   margin: 0;
   padding: 0;
 }
