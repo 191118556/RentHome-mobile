@@ -24,7 +24,7 @@ export default class MyMap extends Component {
 
             if (point) {
                 // 2. 设置地图的缩放级别为11
-                Toast.loading('加载中...', 0, null, true)
+
                 map.centerAndZoom(point, 11);
                 // 3. 添加比例尺和平移缩放控件
                 // 添加平移缩放控件
@@ -44,18 +44,29 @@ export default class MyMap extends Component {
     // 发请求  遍历数据 渲染覆盖物
     async renderOverlays(id) {
         //获取当地城市的房源
+        Toast.loading('加载中...', 0, null, true)
         let res = await axios.get('http://157.122.54.189:9060/area/map', { params: { id } })
         // console.log(res.data.body);
-
+        const { type, nextZoom } = this.getTypeAndZoom()
         res.data.body.forEach((v, i) => {
-            this.createOverlays(v.coord.longitude, v.coord.latitude, v.count, v.label)
+            this.createOverlays(v, type, nextZoom)
         })
         Toast.hide()
     }
     // 渲染覆盖物
-    createOverlays(longitude, latitude, count, name) {
+    createOverlays({ coord, count, label, value }, type, nextZoom) {
+        //判断当前类型，渲染
+        if (type === 'circle') {
+            this.createCircle(value, coord.longitude, coord.latitude, label, count, nextZoom)
+        } else {
+            this.createReact(value, coord.longitude, coord.latitude, label, count)
+        }
+    }
+    // 渲染圆形覆盖物
+    createCircle(id, longitude, latitude, name, count, nextZoom) {
+        const point = new window.BMap.Point(longitude, latitude)
         var opts = {
-            position: new window.BMap.Point(longitude, latitude), // 指定文本标注所在的地理位置
+            position: point, // 指定文本标注所在的地理位置
             offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
         };
         var label = new window.BMap.Label(`<div class=${styles.bubble} ><p class="${styles.name}">${name}</p>
@@ -66,14 +77,40 @@ export default class MyMap extends Component {
             padding: '0px',
         });
         this.map.addOverlay(label);
-    }
-    // 渲染圆形覆盖物
-    createCircle() {
-
+        label.addEventListener('click', () => {
+            // 1. 放大
+            this.map.setZoom(nextZoom)
+            this.map.panTo(point)
+            //解决百度地图Bug
+            //清楚原来的覆盖物
+            setTimeout(() => {
+                this.map.clearOverlays();
+            }, 0)
+            this.renderOverlays(id)
+        })
     }
     // 渲染方形覆盖物
-    createReact() {
+    createReact(id, longitude, latitude, name, count) {
 
+    }
+    getTypeAndZoom() {
+        //获取当前zoom层级
+        const zoom = this.map.getZoom()
+        let type = 'circle'
+        let nextZoom = 0;
+        if (10 <= zoom && zoom < 12) {
+            //最大的一级
+            nextZoom = 13
+        } else if (12 <= zoom && zoom < 14) {
+            //镇和村的级别,下一级的圆形
+            nextZoom = 15
+        } else if (14 <= zoom && zoom < 16) {
+            nextZoom = 16
+            type = 'rect'
+        }
+        return {
+            type, nextZoom
+        }
     }
     componentDidMount() {
         this.initMap()
