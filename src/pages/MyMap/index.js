@@ -9,7 +9,9 @@ import styles from './index.module.scss'
 import './index.scss';
 
 export default class MyMap extends Component {
-
+    state = {
+        isShowHouseList: false
+    }
     async initMap() {
         const cityInfo = await getCurrentCityInfo();
         // console.log(cityInfo);
@@ -39,6 +41,16 @@ export default class MyMap extends Component {
             }
 
         }, cityInfo.label);
+        map.addEventListener('dragstart', () => {
+
+            if (this.state.isShowHouseList) {
+                this.setState({
+                    isShowHouseList: false
+                });
+            }
+
+        })
+
 
     }
     // 发请求  遍历数据 渲染覆盖物
@@ -104,9 +116,10 @@ export default class MyMap extends Component {
             padding: '0px',
         });
         this.map.addOverlay(label);
-        label.addEventListener('click', () => {
-
-
+        label.addEventListener('click', (e) => {
+            const target = e.changedTouches[0];
+            this.map.panBy(window.innerWidth / 2 - target.clientX, (window.innerHeight - 330) / 2 - target.clientY)
+            this.setState({ isShowHouseList: true })
         })
     }
     getTypeAndZoom() {
@@ -138,6 +151,9 @@ export default class MyMap extends Component {
             <div className={styles.map}>
                 <NavHeader >地图找房</NavHeader>
                 <div id="container" className={styles.container}></div>
+                {/* <div className={[styles.houseList, this.state.isShowHouseList ? styles.shows : ''].join('&nbsp;')}></div> */}
+                <div className={`${styles.houselist}   ${this.state.isShowHouseList ? styles.show : ''}`}></div>
+
             </div>
         )
     }

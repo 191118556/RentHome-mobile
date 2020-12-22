@@ -68,3 +68,19 @@
         margin: 0 auto;
     }
 }
+
+.houselist {
+    height: 330px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: #fff;
+    transform: translateY(330px);
+    transition: all 1s;
+
+
+}
+
+.show {
+    transform: translateY(0px);
+}
