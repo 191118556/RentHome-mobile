@@ -8,6 +8,8 @@ https://m-haoke-web.itheima.net/home
 
 http://157.122.54.189:9060/
 
+github地址：https://github.com/191118556/RentHome-mobile.git
+
 ### 项目技术选型
 
 1. 框架React
