@@ -91,7 +91,23 @@ export default class MyMap extends Component {
     }
     // 渲染方形覆盖物
     createReact(id, longitude, latitude, name, count) {
+        const point = new window.BMap.Point(longitude, latitude)
+        var opts = {
+            position: point, // 指定文本标注所在的地理位置
+            offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
+        };
+        var label = new window.BMap.Label(`<div class=${styles.rect} ><p class="${styles.houseName}">${name}</p>
+        <p class=${styles.houseNum}>${count}套</p> <i class=${styles.arrow}></i></div>`, opts);
+        // 自定义文本标注样式
+        label.setStyle({
+            border: '0px solid rgb(255,0,0)',
+            padding: '0px',
+        });
+        this.map.addOverlay(label);
+        label.addEventListener('click', () => {
 
+
+        })
     }
     getTypeAndZoom() {
         //获取当前zoom层级
