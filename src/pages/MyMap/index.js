@@ -13,6 +13,7 @@ export default class MyMap extends Component {
         isShowHouseList: false
     }
     async initMap() {
+        //获取当前定位城市
         const cityInfo = await getCurrentCityInfo();
         // console.log(cityInfo);
         var map = new window.BMap.Map("container");
@@ -65,7 +66,7 @@ export default class MyMap extends Component {
         })
         Toast.hide()
     }
-    // 渲染覆盖物
+    // 创建覆盖物
     createOverlays({ coord, count, label, value }, type, nextZoom) {
         //判断当前类型，渲染
         if (type === 'circle') {
