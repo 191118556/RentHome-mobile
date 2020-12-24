@@ -16,6 +16,7 @@ html, body, ul, li, p {
 
 * {
   box-sizing: border-box;
+  touch-action: pan-y;
 }
 
 ul {

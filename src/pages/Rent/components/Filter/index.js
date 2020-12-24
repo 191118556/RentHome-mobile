@@ -6,6 +6,8 @@ import FilterMore from '../FilterMore'
 
 import styles from './index.module.css'
 
+import { getCurrentCityInfo } from '../../../../utils'
+import axios from 'axios'
 export default class Filter extends Component {
   state = {
     activeTitle: {
@@ -14,8 +16,17 @@ export default class Filter extends Component {
       price: false,
       more: false
     },
-    openType: ''
+    openType: '',
+    filterData: {}
 
+  }
+  async getFilterData() {
+    // 现获取城市信息
+    const cityInfo = await getCurrentCityInfo()
+
+    const res = await axios.get('http://157.122.54.189:9060/houses/condition', { params: { id: cityInfo.value } })
+    // console.log(res);
+    this.setState({ filterData: res.data.body })
   }
   handleTitle = (type) => {
     this.setState({
@@ -37,6 +48,38 @@ export default class Filter extends Component {
       openType: ''
     })
   }
+  componentDidMount() {
+    this.getFilterData()
+  }
+  renderFilterPikcer() {
+    // 这里需要注意的是filterData一开始不要设置为null,不然则会出现报错导致程序无法再替换
+    const { openType, filterData: {
+      area, subway, rentType, price
+    } } = this.state
+    // console.log(this.state.filterData);
+
+    if (openType === 'area' || openType === 'mode' || openType === 'price') {
+      let data = null
+      let cols = 1;
+      //通过switch来处理前三个不同的筛选条件
+      switch (openType) {
+        case 'area':
+          data = [area, subway];
+          cols = 3
+          break;
+        case 'mode':
+          data = rentType;
+          break;
+        case 'price':
+          data = price;
+          break;
+        default:
+          break;
+      }
+      return <FilterPicker data={data} cols={cols} onCancel={this.onCancel} onSave={this.onSave} />
+    }
+    return null
+  }
   render() {
     const { openType } = this.state;
     return (
@@ -51,8 +94,7 @@ export default class Filter extends Component {
           <FilterTitle activeTitle={this.state.activeTitle} handleTitle={this.handleTitle} />
 
           {/* 前三个菜单对应的内容： */}
-          {openType === 'area' || openType === 'mode' || openType === 'price' ? <FilterPicker onCancel={this.onCancel} onSave={this.onSave} /> : null}
-
+          {this.renderFilterPikcer()}
 
           {/* 最后一个菜单对应的内容： */}
           {/* <FilterMore /> */}

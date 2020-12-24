@@ -10,7 +10,8 @@ import './index.scss';
 
 export default class MyMap extends Component {
     state = {
-        isShowHouseList: false
+        isShowHouseList: false,
+        houseList: []
     }
     async initMap() {
         //获取当前定位城市
@@ -120,8 +121,64 @@ export default class MyMap extends Component {
         label.addEventListener('click', (e) => {
             const target = e.changedTouches[0];
             this.map.panBy(window.innerWidth / 2 - target.clientX, (window.innerHeight - 330) / 2 - target.clientY)
-            this.setState({ isShowHouseList: true })
+            // this.setState({ isShowHouseList: true })
+            this.getHouseList(id)
         })
+    }
+    async getHouseList(id) {
+
+        // 开启loading框
+        Toast.loading('加载中...');
+        const res = await axios.get(`http://157.122.54.189:9060/houses`, {
+            params: {
+                cityId: id
+            }
+        });
+        console.log(res.data.body.list);
+        // 关闭loading框
+        Toast.hide();
+
+        this.setState({
+            houseList: res.data.body.list,
+            isShowHouseList: true
+        });
+
+    }
+    //点击矩形 渲染房屋信息
+    renderHouseList() {
+
+        return (<div className={`${styles.houselist}   ${this.state.isShowHouseList ? styles.show : ''}`}>
+            <div className={styles.title}>
+                房屋列表 <span className={styles.more}>更多房源</span>
+            </div>
+            <div className={styles.houseListContent}>
+                {this.state.houseList.map(item => {
+                    return <div className={styles.houseItem} key={item.houseCode}>
+                        <div className={styles.imgWrap}>
+                            <img src={`http://157.122.54.189:9060${item.houseImg}`} alt="" />
+                        </div>
+
+                        <div className={styles.right}>
+                            <h3 className={styles.houseTitle}>
+                                {item.title}
+                            </h3>
+                            <div className={styles.housedesc}>
+                                {item.desc}
+                            </div>
+                            <div >
+                                {item.tags.map((tag, i) => (
+                                    <span key={tag} className={[styles.tags, styles[`tag${(i + 1) % 3}`]].join('   ')}>{tag}</span>
+                                ))}
+                            </div>
+                            <div className={styles.prices}>
+                                <span className={styles.priceNum}>{item.price}</span>元/月
+                        </div>
+                        </div>
+                    </div>
+                })}
+            </div>
+        </div>)
+
     }
     getTypeAndZoom() {
         //获取当前zoom层级
@@ -153,7 +210,7 @@ export default class MyMap extends Component {
                 <NavHeader >地图找房</NavHeader>
                 <div id="container" className={styles.container}></div>
                 {/* <div className={[styles.houseList, this.state.isShowHouseList ? styles.shows : ''].join('&nbsp;')}></div> */}
-                <div className={`${styles.houselist}   ${this.state.isShowHouseList ? styles.show : ''}`}></div>
+                {this.renderHouseList()}
 
             </div>
         )

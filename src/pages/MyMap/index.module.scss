@@ -1,86 +1,198 @@
-/* .map :global(.am-navbar) {} */
-
 .map {
     height: 100%;
     padding-top: 45px;
 
     :global(.am-navbar) {
-        // color: tomato;
         margin-top: -45px;
     }
+
+
+
+    .bubble {
+        width: 70px;
+        height: 70px;
+        line-height: 1;
+        display: inline-block;
+        position: absolute;
+        border-radius: 100%;
+        background: rgba(12, 181, 106, 0.9);
+        color: #fff;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        text-align: center;
+        cursor: pointer;
+
+        .name {
+            padding: 18px 0 6px 0;
+        }
+    }
+
+    .rect {
+        height: 20px;
+        line-height: 19px;
+        width: 100px;
+        padding: 0 3px;
+        border-radius: 3px;
+        position: absolute;
+        color: #fff;
+        background: rgba(12, 181, 106, 0.9);
+        cursor: pointer;
+        white-space: nowrap;
+
+        .houseName {
+            display: inline-block;
+            width: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+        .houseNum {
+            display: inline-block;
+            width: 20px;
+        }
+
+        .arrow {
+            width: 0;
+            height: 0;
+            border: 4px solid transparent;
+            border-top-width: 4px;
+            border-top-color: #00a75b;
+            display: block;
+            margin: 0 auto;
+        }
+    }
+
+
+    // 房源列表
+    .houselist {
+        height: 330px;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        background-color: #fff;
+        transform: translateY(330px);
+        transition: all 1s;
+
+
+        .title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            padding: 15px 10px;
+            background-color: #c0c0c2;
+
+            .more {
+                float: right;
+                // margin-right: 10px;
+                font-size: 12px;
+                color: #666;
+            }
+        }
+
+        .houseListContent {
+            overflow-y: auto;
+            height: 100%;
+            padding: 0 10px 45px;
+
+            .houseItem {
+                height: 120px;
+                position: relative;
+                box-sizing: border-box;
+                justify-content: space-around;
+                // margin: 0 10px 0;
+                padding-top: 18px;
+                border-bottom: 1px solid #e5e5e5;
+
+                .imgWrap {
+                    width: 106px;
+                    height: 80px;
+                    float: left;
+
+                    img {
+                        width: 106px;
+                        height: 80px;
+                    }
+                }
+
+                .right {
+                    overflow: hidden;
+                    line-height: 22px;
+                    padding-left: 12px;
+
+                    .houseTitle {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        vertical-align: middle;
+                        margin: 0;
+                        font-size: 15px;
+                        color: #394043;
+                    }
+
+                    .housedesc {
+                        font-size: 12px;
+                        color: #afb2b3;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        vertical-align: middle;
+                    }
+
+                    .tags {
+                        // background: #e1f5f8;
+                        display: inline-block;
+                        font-size: 12px;
+                        border-radius: 3px;
+                        padding: 4px 5px;
+                        margin-right: 5px;
+                        line-height: 12px;
+
+
+                        .tag1 {
+                            color: #3fc28c;
+                            background: #e1f5ed;
+                        }
+
+                        .tag2 {
+                            color: #39becd;
+                            background: #e1f5ed;
+                        }
+
+                        .tag3 {
+                            color: #00a75b;
+                            background: #e1f5ed;
+                        }
+                    }
+
+                    .prices {
+                        font-size: 12px;
+                        color: #fa5741;
+
+                        .priceNum {
+                            font-size: 16px;
+                            font-weight: bolder;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+    }
+
+
+    .show {
+        transform: translateY(0px);
+    }
+
+
+
 }
 
+/* 全局样式名选择  :global  */
+// .map 
 .container {
     height: 100%;
-}
-
-.bubble {
-    width: 70px;
-    height: 70px;
-    line-height: 1;
-    display: inline-block;
-    position: absolute;
-    border-radius: 100%;
-    background: rgba(12, 181, 106, 0.9);
-    color: #fff;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    text-align: center;
-    cursor: pointer;
-
-    .name {
-        padding: 18px 0 6px 0;
-    }
-}
-
-.rect {
-    height: 20px;
-    line-height: 19px;
-    width: 100px;
-    padding: 0 3px;
-    border-radius: 3px;
-    position: absolute;
-    color: #fff;
-    background: rgba(12, 181, 106, 0.9);
-    cursor: pointer;
-    white-space: nowrap;
-
-    .houseName {
-        display: inline-block;
-        width: 70px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        vertical-align: middle;
-    }
-
-    .houseNum {
-        display: inline-block;
-        width: 20px;
-    }
-
-    .arrow {
-        width: 0;
-        height: 0;
-        border: 4px solid transparent;
-        border-top-width: 4px;
-        border-top-color: #00a75b;
-        display: block;
-        margin: 0 auto;
-    }
-}
-
-.houselist {
-    height: 330px;
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    background-color: #fff;
-    transform: translateY(330px);
-    transition: all 1s;
-
-
-}
-
-.show {
-    transform: translateY(0px);
 }
