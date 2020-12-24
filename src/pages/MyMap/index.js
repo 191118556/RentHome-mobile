@@ -7,6 +7,7 @@ import { Toast } from 'antd-mobile';
 import { getCurrentCityInfo } from '../../utils'
 import styles from './index.module.scss'
 import './index.scss';
+import { BASE_URL } from '../../utils/url'
 
 export default class MyMap extends Component {
     state = {
