@@ -9,7 +9,7 @@ html, body {
   height: 100%;
 }
 
-html, body, ul, li, p {
+html, body, ul, li, p, dl, dt, dd {
   margin: 0;
   padding: 0;
 }
